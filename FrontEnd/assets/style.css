@@ -316,7 +316,7 @@ a {
   font-size: 18px;
 }
 
-#filters li:hover {
+#filters li.selected {
   background-color: #1d6154;
   color: white;
 }

@@ -1,9 +1,9 @@
 /*
-gallery
-filtre
-token
+gallery;
+filtre;
+token;
+
 */
-/**/
 
 fetchCats();
 async function fetchCats() {
@@ -14,34 +14,31 @@ async function fetchCats() {
 }
 
 fetchCats().then((categories) => {
-  categories.unshift({ name: "Tous" });
+  categories.unshift({ id: 0, name: "Tous" });
   const categoriesList = document.getElementById("filters");
 
   categories.forEach((category) => {
     const listItem = document.createElement("li");
     listItem.textContent = ` ${category.name}`;
     categoriesList.appendChild(listItem);
+
+    listItem.addEventListener("click", () => filterWorks(category.id));
   });
 });
-/*____________________________________________________________________________________________________________________________ */
-/*
-async function works() {
-  const response = await fetch("http://localhost:5678/api/works");
-  const categories = await response.json();
 
-  return categories;
-}
-
-works();*/
-async function works() {
+async function filterWorks(categoryId) {
   try {
-    //pour gestion des errer
     const response = await fetch("http://localhost:5678/api/works");
     const categories = await response.json();
 
-    const gallery = document.getElementById("gallery");
+    const filteredCategories = categories.filter((work) => {
+      return categoryId === 0 || work.categoryId === categoryId;
+    });
 
-    categories.forEach((e) => {
+    const gallery = document.getElementById("gallery");
+    gallery.innerHTML = "";
+
+    filteredCategories.forEach((e) => {
       const imageContainer = document.createElement("div");
       const imageElement = document.createElement("img");
       const titleElement = document.createElement("p");
@@ -56,7 +53,6 @@ async function works() {
       gallery.appendChild(imageContainer);
     });
   } catch (error) {
-    //pour gestion des errer
     console.error(
       "Une erreur s'est produite lors de la récupération des données de la galerie :",
       error
@@ -64,5 +60,4 @@ async function works() {
   }
 }
 
-// afficher galerie quand page est chargée
-window.addEventListener("load", works);
+window.addEventListener("load", filterWorks);
