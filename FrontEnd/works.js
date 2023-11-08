@@ -24,8 +24,9 @@ fetchCats().then((categories) => {
 
     listItem.addEventListener("click", () => filterWorks(category.id));
   });
-});
 
+  filterWorks(0);
+});
 async function filterWorks(categoryId) {
   try {
     const response = await fetch("http://localhost:5678/api/works");
