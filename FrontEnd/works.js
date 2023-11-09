@@ -28,37 +28,35 @@ fetchCats().then((categories) => {
   filterWorks(0);
 });
 async function filterWorks(categoryId) {
-  try {
-    const response = await fetch("http://localhost:5678/api/works");
-    const categories = await response.json();
+  fetch("http://localhost:5678/api/works")
+    .then((response) => {
+      if (response.ok) {
+      }
+      return response.json();
+    })
+    .then((categories) => {
+      const filteredCategories = categories.filter((work) => {
+        return categoryId === 0 || work.categoryId === categoryId;
+      });
 
-    const filteredCategories = categories.filter((work) => {
-      return categoryId === 0 || work.categoryId === categoryId;
+      const gallery = document.getElementById("gallery");
+      gallery.innerHTML = "";
+
+      filteredCategories.forEach((e) => {
+        const imageContainer = document.createElement("div");
+        const imageElement = document.createElement("img");
+        const titleElement = document.createElement("p");
+
+        imageElement.src = e.imageUrl;
+        imageElement.alt = e.title;
+
+        titleElement.textContent = e.title;
+
+        imageContainer.appendChild(imageElement);
+        imageContainer.appendChild(titleElement);
+        gallery.appendChild(imageContainer);
+      });
     });
-
-    const gallery = document.getElementById("gallery");
-    gallery.innerHTML = "";
-
-    filteredCategories.forEach((e) => {
-      const imageContainer = document.createElement("div");
-      const imageElement = document.createElement("img");
-      const titleElement = document.createElement("p");
-
-      imageElement.src = e.imageUrl;
-      imageElement.alt = e.title;
-
-      titleElement.textContent = e.title;
-
-      imageContainer.appendChild(imageElement);
-      imageContainer.appendChild(titleElement);
-      gallery.appendChild(imageContainer);
-    });
-  } catch (error) {
-    console.error(
-      "Une erreur s'est produite lors de la récupération des données de la galerie :",
-      error
-    );
-  }
 }
 
 window.addEventListener("load", filterWorks);

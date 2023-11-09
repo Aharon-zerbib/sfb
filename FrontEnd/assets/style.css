@@ -350,3 +350,6 @@ a {
 #gallery img {
   width: 100%;
 }
+.connexion {
+  cursor: pointer;
+}
