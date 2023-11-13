@@ -9,9 +9,7 @@ function fetchLogin() {
 }
 
 export { fetchLogin, login };
-
-*/
-async function fetchPost(url, data) {
+*/ async function fetchPost(url, data) {
   const fetchOptions = {
     method: "POST",
     headers: {
@@ -30,21 +28,18 @@ async function submit(e) {
   e.preventDefault();
   const url = "http://localhost:5678/api/users/login";
 
-  try {
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("pass").value;
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("pass").value;
 
-    const data = {
-      email: email,
-      password: password,
-    };
+  const data = {
+    email: email,
+    password: password,
+  };
 
-    const responseData = await fetchPost(url, data);
+  fetchPost(url, data).then((responseData) => {
     localStorage.setItem("token", responseData.token);
     window.location.href = "index.html";
-  } catch (err) {
-    console.log("Erreur: " + err);
-  }
+  });
 }
 
 const submitBtn = document.querySelector(".form");

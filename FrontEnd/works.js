@@ -13,6 +13,15 @@ async function fetchCats() {
   return categories;
 }
 
+async function filterWorks(categoryId) {
+  const listItems = document.querySelectorAll("#filters li");
+  listItems.forEach((item) => {
+    item.classList.remove("selected");
+    if (item.dataset.categoryId === categoryId.toString()) {
+      item.classList.add("selected");
+    }
+  });
+}
 fetchCats().then((categories) => {
   categories.unshift({ id: 0, name: "Tous" });
   const categoriesList = document.getElementById("filters");

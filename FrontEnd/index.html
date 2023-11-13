@@ -69,11 +69,30 @@
         <h2>
           Mes Projets
           <span class="admin btn_projects">
-            <a id="btn_proj" href="#modal"
+            <a class="js-modal" id="btn_proj" href="#modal1"
               ><i class="fa-regular fa-pen-to-square"></i> modifier</a
             >
           </span>
         </h2>
+        <aside
+          id="modal1"
+          class="modal"
+          aria-hidden="true"
+          role="dialog"
+          aria-labelledby="titlemodal"
+          style="display: none"
+        >
+          <div class="modal-wrapper js-modal-stop">
+            <h1 id="titlemodal"></h1>
+            <p>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Et
+              fugiat, repudiandae voluptates tempore saepe distinctio labore
+              dignissimos optio sit quasi dolore nulla similique, non
+              consectetur eligendi reiciendis inventore quae perferendis!
+            </p>
+          </div>
+          <button class="js-modal-close">&times;</button>
+        </aside>
 
         <div id="filters" class="filters"></div>
 
@@ -106,5 +125,6 @@
       </nav>
     </footer>
     <script src="works.js"></script>
+    <script src="modal.js"></script>
   </body>
 </html>
