@@ -353,3 +353,70 @@ a {
 .connexion {
   cursor: pointer;
 }
+#modal1 {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.modal_box-1 {
+  width: 630px;
+  height: 670px;
+  background-color: #fff;
+  border-radius: 12px;
+}
+.js-modal-close {
+  font-size: 30px;
+  font-family: "Syne";
+  color: #000000;
+  position: absolute;
+  right: 24px;
+  top: 12px;
+  border: none;
+  text-decoration: none;
+  background-color: transparent;
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+#imgmo {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin: auto;
+  width: 60%;
+  box-sizing: border-box;
+  gap: 15px;
+}
+
+#imgmo img {
+  width: 21%;
+  margin-bottom: 15px;
+}
+h2.Galerie-p {
+  color: black;
+  font-weight: 100;
+  font-family: "Work Sans";
+  font-size: 35px;
+  padding-top: 50px;
+  padding-bottom: 10px;
+}
+
+.modal_footer {
+  position: absolute;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  bottom: 5%;
+}
+
+.modal_footer #addFile {
+  margin: 1.5em auto;
+  width: 260px;
+  font-size: 16px;
+  height: 40px;
+}
+.modal_footer #addFile:hover {
+  cursor: pointer;
+}

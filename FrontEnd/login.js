@@ -9,39 +9,38 @@ function fetchLogin() {
 }
 
 export { fetchLogin, login };
-*/ async function fetchPost(url, data) {
-  const fetchOptions = {
+*/
+async function fetchPost(url, formData) {
+  const data = JSON.stringify(Object.fromEntries(formData.entries()));
+
+  const response = await fetch(url, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-    },
-    body: JSON.stringify(data),
-  };
+    headers: { "Content-Type": "application/json", Accept: "application/json" },
+    body: data,
+  });
 
-  const response = await fetch(url, fetchOptions);
-
-  return response.json();
+  try {
+    if (response.status === 404) throw "L'adresse email saisie est invalide.";
+    if (response.status === 401)
+      throw "Le mot de passe que vous avez indiqué n'est pas reconnu.";
+    return response.json();
+  } catch (error) {
+    alert("Erreur: " + error);
+  }
 }
 
 async function submit(e) {
   e.preventDefault();
   const url = "http://localhost:5678/api/users/login";
 
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("pass").value;
-
-  const data = {
-    email: email,
-    password: password,
-  };
-
-  fetchPost(url, data).then((responseData) => {
+  try {
+    const responseData = await fetchPost(url, new FormData(submitBtn));
     localStorage.setItem("token", responseData.token);
     window.location.href = "index.html";
-  });
+  } catch (err) {
+    console.log("Erreur: " + err);
+  }
 }
 
 const submitBtn = document.querySelector(".form");
-
 submitBtn.addEventListener("submit", submit);

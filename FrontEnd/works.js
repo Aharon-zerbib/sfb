@@ -67,5 +67,3 @@ async function filterWorks(categoryId) {
       });
     });
 }
-
-window.addEventListener("load", filterWorks);

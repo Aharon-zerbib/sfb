@@ -1,4 +1,5 @@
-// cou ou aurra la galriel en uplad
+/* la je fait les deux modal-box a voir comment faire pour metre 
+les deux il faudrra faire aussi le truc pour upload une photo en 4mo */
 const openModal = function (e) {
   e.preventDefault();
   const target = document.querySelector(e.target.getAttribute("href"));
@@ -35,3 +36,25 @@ const stopPropagation = function (e) {
 document.querySelectorAll(".js-modal").forEach((a) => {
   a.addEventListener("click", openModal);
 });
+
+var xhr = new XMLHttpRequest();
+xhr.open("GET", "http://localhost:5678/api/works", true);
+xhr.onreadystatechange = function () {
+  if (xhr.readyState === 4) {
+    if (xhr.status === 200) {
+      var data = JSON.parse(xhr.responseText);
+
+      var imgmoDiv = document.getElementById("imgmo");
+      if (data.length > 0) {
+        for (var i = 0; i < data.length; i++) {
+          var image = data[i];
+          var imgElement = document.createElement("img");
+          imgElement.src = image.imageUrl;
+          imgElement.alt = image.title;
+          imgmoDiv.appendChild(imgElement);
+        }
+      }
+    }
+  }
+};
+xhr.send();

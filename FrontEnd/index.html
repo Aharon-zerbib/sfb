@@ -21,20 +21,16 @@
     <link rel="stylesheet" href="./assets/style.css" />
   </head>
   <body>
+    <div class="admin btn_publish">
+      <i class="fa-regular fa-pen-to-square"></i> Mode édition
+    </div>
     <header>
-      <!--
-      <aside class="mode_1">
-        <div class="mode__modifier">
-          <i class="fa-solid fa-pen-to-square"></i>
-          <p>Mode édition</p>
-        </div>
-      </aside>-->
       <h1>Sophie Bluel <span>Architecte d'inteérieur</span></h1>
       <nav>
         <ul>
           <li>projets</li>
           <li>contact</li>
-          <li><a id="login" href="login.html">login</a></li>
+          <li><a id="logout" href="login.html">login</a></li>
           <li><img src="./assets/icons/instagram.png" alt="Instagram" /></li>
         </ul>
       </nav>
@@ -43,7 +39,6 @@
       <section id="introduction">
         <figure>
           <img src="./assets/images/sophie-bluel.png" alt="" />
-          <div class="admin btn_figure"></div>
         </figure>
         <article>
           <h2>Designer d'espace</h2>
@@ -74,6 +69,7 @@
             >
           </span>
         </h2>
+        <!--metre deux modal-box , commprendre la logique de comment les faire -->
         <aside
           id="modal1"
           class="modal"
@@ -84,14 +80,17 @@
         >
           <div class="modal-wrapper js-modal-stop">
             <h1 id="titlemodal"></h1>
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Et
-              fugiat, repudiandae voluptates tempore saepe distinctio labore
-              dignissimos optio sit quasi dolore nulla similique, non
-              consectetur eligendi reiciendis inventore quae perferendis!
-            </p>
+
+            <div class="modal_box-1">
+              <button class="js-modal-close">&times;</button>
+              <h2 class="Galerie-p">Galerie photo</h2>
+              <div id="imgmo"></div>
+              <div class="modal_footer">
+                <hr />
+                <input id="addFile" type="submit" value="Ajouter une photo" />
+              </div>
+            </div>
           </div>
-          <button class="js-modal-close">&times;</button>
         </aside>
 
         <div id="filters" class="filters"></div>
