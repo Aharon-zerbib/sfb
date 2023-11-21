@@ -4,44 +4,45 @@ filtre;
 token;
 
 */
-
 fetchCats();
+
 async function fetchCats() {
   const response = await fetch("http://localhost:5678/api/categories");
   const categories = await response.json();
 
-  return categories;
-}
-
-async function filterWorks(categoryId) {
-  const listItems = document.querySelectorAll("#filters li");
-  listItems.forEach((item) => {
-    item.classList.remove("selected");
-    if (item.dataset.categoryId === categoryId.toString()) {
-      item.classList.add("selected");
-    }
-  });
-}
-fetchCats().then((categories) => {
   categories.unshift({ id: 0, name: "Tous" });
   const categoriesList = document.getElementById("filters");
 
   categories.forEach((category) => {
     const listItem = document.createElement("li");
     listItem.textContent = ` ${category.name}`;
+    listItem.style.cursor = "pointer";
     categoriesList.appendChild(listItem);
 
-    listItem.addEventListener("click", () => filterWorks(category.id));
+    listItem.addEventListener("click", () =>
+      filterWorks(category.id, listItem)
+    );
   });
 
   filterWorks(0);
-});
-async function filterWorks(categoryId) {
+}
+
+async function filterWorks(categoryId, clickedListItem) {
+  const listItems = document.querySelectorAll("#filters li");
+
+  listItems.forEach((item) => {
+    item.classList.remove("selected");
+  });
+
+  if (clickedListItem) {
+    clickedListItem.classList.add("selected");
+  }
+
   fetch("http://localhost:5678/api/works")
     .then((response) => {
       if (response.ok) {
+        return response.json();
       }
-      return response.json();
     })
     .then((categories) => {
       const filteredCategories = categories.filter((work) => {

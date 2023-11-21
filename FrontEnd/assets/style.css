@@ -353,7 +353,8 @@ a {
 .connexion {
   cursor: pointer;
 }
-#modal1 {
+#modal1,
+#modal2 {
   position: fixed;
   top: 50%;
   left: 50%;
