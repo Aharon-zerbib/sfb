@@ -296,7 +296,9 @@ a {
   padding-left: 15px;
   vertical-align: middle;
 }
-
+.admin {
+  display: none;
+}
 #filters {
   display: flex;
   justify-content: center;
@@ -378,6 +380,7 @@ a {
   background-color: transparent;
   cursor: pointer;
   opacity: 0.7;
+  padding-top: 10px;
 }
 
 #imgmo {
@@ -420,4 +423,89 @@ h2.Galerie-p {
 }
 .modal_footer #addFile:hover {
   cursor: pointer;
+}
+.fleche {
+  padding-left: 25px;
+  padding-top: 30px;
+}
+#modal_title-2 {
+  color: black;
+  font-weight: 100;
+  font-family: "Work Sans";
+  font-size: 35px;
+  padding-top: 5px;
+  margin-bottom: 50px;
+}
+.modal_bod {
+  display: flex;
+  width: 400px;
+  margin: auto;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
+.modal_upload {
+  width: 100%;
+  height: 40%;
+}
+.modal_upload-1 {
+  width: 400px;
+  height: 150px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: rgb(229, 239, 245);
+  margin-bottom: 15px;
+}
+.modal_upload-2 {
+  width: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: rgb(255, 255, 255);
+  gap: 15px;
+  text-align: left;
+}
+
+.modal_upload-2 input,
+select {
+  box-shadow: 0 5px 5px rgb(229, 229, 229);
+  border: none;
+  width: 420px;
+  height: 51px;
+}
+.modal_footer #submit:disabled {
+  background-color: #8c8c8c;
+  width: 237px;
+  height: 36px;
+}
+.ajout-photo {
+  color: #306685;
+  text-align: center;
+  font-family: Work Sans;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+button {
+  border-radius: 50px;
+  background: #cbd6dc;
+  width: 173px;
+  height: 36px;
+  border: none;
+}
+.ajout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.mo_max {
+  color: #444;
+  text-align: center;
+  font-family: Work Sans;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
 }

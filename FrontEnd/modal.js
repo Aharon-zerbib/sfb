@@ -5,6 +5,7 @@ const openModal = function (e) {
   target.removeAttribute("aria-hidden");
   target.setAttribute("aria-modal", "true");
   modal = target;
+  console.log(modal);
   modal.addEventListener("click", closeModal);
   modal.querySelector(".js-modal-close").addEventListener("click", closeModal);
   modal
@@ -27,6 +28,7 @@ const closeModal = function (e) {
     .removeEventListener("click", stopPropagation);
   modal = null;
 };
+
 const stopPropagation = function (e) {
   e.stopPropagation();
 };
@@ -34,6 +36,7 @@ const stopPropagation = function (e) {
 document.querySelectorAll(".js-modal").forEach((a) => {
   a.addEventListener("click", openModal);
 });
+
 fetch("http://localhost:5678/api/works")
   .then((response) => {
     if (!response.ok) {
@@ -55,6 +58,15 @@ fetch("http://localhost:5678/api/works")
 
 document.getElementById("addFile").addEventListener("click", function () {
   document.getElementById("modal1").style.display = "none";
-
   document.getElementById("modal2").style.display = "block";
 });
+
+const returnToModal1 = function (e) {
+  e.preventDefault();
+  document.getElementById("modal2").style.display = "none";
+  document.getElementById("modal1").style.display = "block";
+};
+
+document
+  .getElementById("returnToModal1Button")
+  .addEventListener("click", returnToModal1);
