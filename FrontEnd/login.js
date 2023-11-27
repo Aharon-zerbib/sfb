@@ -35,9 +35,9 @@ function toggleButtonVisibility() {
 
     if (token) {
       btnProj.style.display = "inline";
+    } else {
+      btnProj.style.display = "none";
     }
-  } else {
-    console.log("'btn_proj' pas trouvé.");
   }
 }
 
@@ -62,10 +62,10 @@ async function submit(e) {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-  toggleButtonVisibility();
-
   const submitForm = document.querySelector(".form");
   if (submitForm) {
     submitForm.addEventListener("submit", submit);
   }
+
+  toggleButtonVisibility();
 });
