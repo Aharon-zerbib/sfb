@@ -26,19 +26,35 @@ async function fetchPost(url, formData) {
     alert("Erreur: " + error.message);
   }
 }
-
 function toggleButtonVisibility() {
   const btnProj = document.querySelector(".btn_projects");
+  const btnEditMode = document.getElementById("btn_edit_mode");
+  const logoutLink = document.getElementById("logout");
+  const loginLink = document.getElementById("login");
+
+  const token = localStorage.getItem("token");
 
   if (btnProj) {
-    const token = localStorage.getItem("token");
-
-    if (token) {
-      btnProj.style.display = "inline";
-    } else {
-      btnProj.style.display = "none";
-    }
+    btnProj.style.display = token ? "inline" : "none";
   }
+
+  if (btnEditMode) {
+    btnEditMode.style.display = token ? "hiden" : "none";
+  }
+
+  if (logoutLink) {
+    logoutLink.style.display = token ? "inline" : "none";
+  }
+
+  if (loginLink) {
+    loginLink.style.display = token ? "none" : "inline";
+  }
+}
+
+function logout() {
+  localStorage.removeItem("token");
+  toggleButtonVisibility();
+  window.location.href = "login.html";
 }
 
 async function submit(e) {
@@ -61,10 +77,25 @@ async function submit(e) {
   }
 }
 
+function toggleEditMode() {
+  console.log("Mode édition activé !");
+}
+
 document.addEventListener("DOMContentLoaded", function () {
   const submitForm = document.querySelector(".form");
+  const logoutLink = document.getElementById("logout");
+  const btnEditMode = document.getElementById("btn_edit_mode");
+
   if (submitForm) {
     submitForm.addEventListener("submit", submit);
+  }
+
+  if (logoutLink) {
+    logoutLink.addEventListener("click", logout);
+  }
+
+  if (btnEditMode) {
+    btnEditMode.addEventListener("click", toggleEditMode);
   }
 
   toggleButtonVisibility();

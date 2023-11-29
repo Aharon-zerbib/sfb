@@ -17,16 +17,18 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     />
+
     <meta name="description" content="" />
     <link rel="stylesheet" href="./assets/style.css" />
   </head>
 
   <body>
     <div class="en-haut">
-      <div class="admin btn_publish">
+      <div class="admin btn_publish" id="btn_edit_mode">
         <i class="fa-regular fa-pen-to-square"></i> Mode édition
       </div>
     </div>
+
     <main>
       <header>
         <h1>Sophie Bluel <span>Architecte d'inteérieur</span></h1>
@@ -34,7 +36,8 @@
           <ul>
             <li>projets</li>
             <li>contact</li>
-            <li><a id="logout" href="login.html">login</a></li>
+            <li><a id="login" href="login.html">login</a></li>
+            <li><a id="logout" href="#">logout</a></li>
             <li><img src="./assets/icons/instagram.png" alt="Instagram" /></li>
           </ul>
         </nav>
@@ -124,9 +127,7 @@
                   />
                 </svg>
                 <button class="js-modal-close">&times;</button>
-
                 <h2 id="modal_title-2">Ajout photo</h2>
-
                 <form id="validate_form">
                   <div class="modal_bod">
                     <div class="modal_upload-1">
@@ -143,7 +144,30 @@
                             fill="#B9C5CC"
                           />
                         </svg>
-                        <button class="ajout-photo">+ Ajouter photo</button>
+
+                        <label for="imageInput" class="ajouterFichierLabel">
+                          + Ajouter photo</label
+                        >
+                        <input
+                          type="file"
+                          accept="image/*"
+                          id="imageInput"
+                          onchange="handleImageSelect(event)"
+                          style="
+                            opacity: 0;
+                            position: absolute;
+                            width: 1px;
+                            height: 1px;
+                            overflow: hidden;
+                          "
+                        />
+                        <img
+                          id="selectedImage"
+                          src="#"
+                          alt="Image sélectionnée"
+                          style="max-width: 300px; display: none"
+                        />
+
                         <div class="mo_max">jpg, png : 4mo max</div>
                       </div>
                     </div>

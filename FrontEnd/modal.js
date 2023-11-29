@@ -44,6 +44,12 @@ const stopPropagation = function (e) {
   e.stopPropagation();
 };
 
+const returnToModal1 = function (e) {
+  e.preventDefault();
+  hideModal(document.getElementById("modal2"));
+  showModal(document.getElementById("modal1"));
+};
+
 document.body.addEventListener("click", function (e) {
   if (e.target.classList.contains("js-modal")) {
     openModal(e);
@@ -78,8 +84,24 @@ document.getElementById("addFile").addEventListener("click", function () {
   showModal(document.getElementById("modal2"));
 });
 
-const returnToModal1 = function (e) {
-  e.preventDefault();
-  hideModal(document.getElementById("modal2"));
-  showModal(document.getElementById("modal1"));
-};
+document
+  .getElementById("returnToModal1Button")
+  .addEventListener("click", returnToModal1);
+
+function handleImageSelect(event) {
+  const fileInput = event.target;
+
+  const selectedImage = document.getElementById("selectedImage");
+
+  if (fileInput.files && fileInput.files[0]) {
+    const reader = new FileReader();
+
+    reader.onload = function (e) {
+      selectedImage.src = e.target.result;
+
+      selectedImage.style.display = "block";
+    };
+
+    reader.readAsDataURL(fileInput.files[0]);
+  }
+}
