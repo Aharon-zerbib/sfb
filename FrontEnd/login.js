@@ -17,7 +17,7 @@ async function fetchPost(url, formData) {
 
     if (response.status === 401) {
       throw new Error(
-        "Le mot de passe que vous avez indiqué n'est pas reconnu."
+        "Le mot de passe que vous avez indiqué n'est pas reconnu." //pas alert
       );
     }
 

@@ -88,20 +88,55 @@ document
   .getElementById("returnToModal1Button")
   .addEventListener("click", returnToModal1);
 
+//pour le ajout photo
 function handleImageSelect(event) {
   const fileInput = event.target;
-
   const selectedImage = document.getElementById("selectedImage");
+  const submitButton = document.getElementById("submit");
+
+  const svg = document.querySelector(".le-svg");
+  const mo_max = document.querySelector(".mo_max");
+  const ajouterFichierLabel = document.querySelector(".ajouterFichierLabel");
 
   if (fileInput.files && fileInput.files[0]) {
     const reader = new FileReader();
 
     reader.onload = function (e) {
       selectedImage.src = e.target.result;
-
       selectedImage.style.display = "block";
+
+      svg.style.display = "none";
+      ajouterFichierLabel.style.display = "none";
+      mo_max.style.display = "none";
+
+      submitButton.removeAttribute("disabled");
     };
 
     reader.readAsDataURL(fileInput.files[0]);
   }
 }
+
+//pour l'api categorie
+document.addEventListener("DOMContentLoaded", function () {
+  var select = document.getElementById("category");
+
+  var la_cat = new XMLHttpRequest();
+
+  la_cat.open("GET", "http://localhost:5678/api/categories", true);
+  la_cat.setRequestHeader("Content-type", "application/json");
+
+  la_cat.onload = function () {
+    if (la_cat.status >= 200 && la_cat.status < 300) {
+      var categories = JSON.parse(la_cat.responseText);
+
+      categories.forEach(function (category) {
+        var option = document.createElement("option");
+        option.value = category.id;
+        option.textContent = category.name;
+        select.appendChild(option);
+      });
+    }
+  };
+
+  la_cat.send();
+});
