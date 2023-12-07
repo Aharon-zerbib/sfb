@@ -537,3 +537,17 @@ hr {
   width: 420px;
   height: 1px;
 }
+.image-container {
+  position: relative;
+  display: inline-block;
+}
+
+.square {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 20px;
+  height: 20px;
+  background-color: red;
+  cursor: pointer;
+}

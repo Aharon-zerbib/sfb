@@ -55,8 +55,7 @@ document.body.addEventListener("click", function (e) {
     openModal(e);
   }
 });
-
-fetch("http://localhost:5678/api/works")
+/*fetch("http://localhost:5678/api/works")
   .then((response) => {
     if (!response.ok) {
       throw new Error(`Erreur HTTP! Statut : ${response.status}`);
@@ -71,6 +70,49 @@ fetch("http://localhost:5678/api/works")
         imgElement.src = image.imageUrl;
         imgElement.alt = image.title;
         imgmoDiv.appendChild(imgElement);
+      });
+    }
+  });
+ */
+fetch("http://localhost:5678/api/works")
+  .then((response) => {
+    if (!response.ok) {
+      throw new Error(`Erreur HTTP! Statut : ${response.status}`);
+    }
+    return response.json();
+  })
+  .then((data) => {
+    var imgmoDiv = document.getElementById("imgmo");
+
+    var savedData = JSON.parse(localStorage.getItem("savedData")) || {};
+
+    if (data.length > 0) {
+      data.forEach((image) => {
+        var imgElement = document.createElement("img");
+        imgElement.src = image.imageUrl;
+        imgElement.alt = image.title;
+
+        var containerDiv = document.createElement("div");
+        containerDiv.classList.add("image-container");
+
+        containerDiv.appendChild(imgElement);
+
+        var trashIcon = document.createElement("i");
+        trashIcon.classList.add("fa", "fa-solid", "fa-trash-can");
+        trashIcon.title = "Cliquez pour supprimer l'image";
+
+        trashIcon.addEventListener("click", function () {
+          var updatedData = data.filter((item) => item.title !== image.title);
+
+          savedData.images = updatedData;
+          localStorage.setItem("savedData", JSON.stringify(savedData));
+
+          containerDiv.remove();
+        });
+
+        containerDiv.appendChild(trashIcon);
+
+        imgmoDiv.appendChild(containerDiv);
       });
     }
   });
