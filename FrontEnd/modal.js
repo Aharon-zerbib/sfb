@@ -87,10 +87,10 @@ fetch("http://localhost:5678/api/works")
     var savedData = JSON.parse(localStorage.getItem("savedData")) || {};
 
     if (data.length > 0) {
-      data.forEach((image) => {
+      data.forEach((work) => {
         var imgElement = document.createElement("img");
-        imgElement.src = image.imageUrl;
-        imgElement.alt = image.title;
+        imgElement.src = work.imageUrl;
+        imgElement.alt = work.title;
 
         var containerDiv = document.createElement("div");
         containerDiv.classList.add("image-container");
@@ -101,13 +101,30 @@ fetch("http://localhost:5678/api/works")
         trashIcon.classList.add("fa", "fa-solid", "fa-trash-can");
         trashIcon.title = "Cliquez pour supprimer l'image";
 
-        trashIcon.addEventListener("click", function () {
-          var updatedData = data.filter((item) => item.title !== image.title);
+        trashIcon.addEventListener("click", async function () {
+          const token = localStorage.getItem("token");
+          const res = await fetch(
+            `http://localhost:5678/api/works/${work.id}`,
+            {
+              method: "DELETE",
+              headers: {
+                "Content-Type": "application/json",
+                Accept: "*/*",
+                Authorization: `Bearer: ${token}`,
+              },
+            }
+          );
+          // HTTP 200 OK
+          if (res.ok) {
+            containerDiv.remove();
+            //Mettre à jour pour local en fiiltrant les element que j'ai teje
+            data = data.filter((item) => item.id !== work.id);
+            // Mettre à jour du local
+            savedData.images = data;
+            localStorage.setItem("savedData", JSON.stringify(savedData));
 
-          savedData.images = updatedData;
-          localStorage.setItem("savedData", JSON.stringify(savedData));
-
-          containerDiv.remove();
+            generateWorks();
+          }
         });
 
         containerDiv.appendChild(trashIcon);
