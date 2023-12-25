@@ -55,84 +55,6 @@ document.body.addEventListener("click", function (e) {
     openModal(e);
   }
 });
-/*fetch("http://localhost:5678/api/works")
-  .then((response) => {
-    if (!response.ok) {
-      throw new Error(`Erreur HTTP! Statut : ${response.status}`);
-    }
-    return response.json();
-  })
-  .then((data) => {
-    var imgmoDiv = document.getElementById("imgmo");
-    if (data.length > 0) {
-      data.forEach((image) => {
-        var imgElement = document.createElement("img");
-        imgElement.src = image.imageUrl;
-        imgElement.alt = image.title;
-        imgmoDiv.appendChild(imgElement);
-      });
-    }
-  });
- */
-fetch("http://localhost:5678/api/works")
-  .then((response) => {
-    if (!response.ok) {
-      throw new Error(`Erreur HTTP! Statut : ${response.status}`);
-    }
-    return response.json();
-  })
-  .then((data) => {
-    var imgmoDiv = document.getElementById("imgmo");
-
-    var savedData = JSON.parse(localStorage.getItem("savedData")) || {};
-
-    if (data.length > 0) {
-      data.forEach((work) => {
-        var imgElement = document.createElement("img");
-        imgElement.src = work.imageUrl;
-        imgElement.alt = work.title;
-
-        var containerDiv = document.createElement("div");
-        containerDiv.classList.add("image-container");
-
-        containerDiv.appendChild(imgElement);
-
-        var trashIcon = document.createElement("i");
-        trashIcon.classList.add("fa", "fa-solid", "fa-trash-can");
-        trashIcon.title = "Cliquez pour supprimer l'image";
-
-        trashIcon.addEventListener("click", async function () {
-          const token = localStorage.getItem("token");
-          const res = await fetch(
-            `http://localhost:5678/api/works/${work.id}`,
-            {
-              method: "DELETE",
-              headers: {
-                "Content-Type": "application/json",
-                Accept: "*/*",
-                Authorization: `Bearer: ${token}`,
-              },
-            }
-          );
-          // HTTP 200 OK
-          if (res.ok) {
-            containerDiv.remove();
-            //Mettre à jour pour local en fiiltrant les element que j'ai teje
-            data = data.filter((item) => item.id !== work.id);
-            // Mettre à jour du local
-            savedData.images = data;
-            localStorage.setItem("savedData", JSON.stringify(savedData));
-
-            generateWorks();
-          }
-        });
-
-        containerDiv.appendChild(trashIcon);
-
-        imgmoDiv.appendChild(containerDiv);
-      });
-    }
-  });
 
 document.querySelectorAll(".js-modal").forEach((a) => {
   a.addEventListener("click", openModal);
@@ -146,34 +68,6 @@ document.getElementById("addFile").addEventListener("click", function () {
 document
   .getElementById("returnToModal1Button")
   .addEventListener("click", returnToModal1);
-
-//pour le ajout photo
-function handleImageSelect(event) {
-  const fileInput = event.target;
-  const selectedImage = document.getElementById("selectedImage");
-  const submitButton = document.getElementById("submit");
-
-  const svg = document.querySelector(".le-svg");
-  const mo_max = document.querySelector(".mo_max");
-  const ajouterFichierLabel = document.querySelector(".ajouterFichierLabel");
-
-  if (fileInput.files && fileInput.files[0]) {
-    const reader = new FileReader();
-
-    reader.onload = function (e) {
-      selectedImage.src = e.target.result;
-      selectedImage.style.display = "block";
-
-      svg.style.display = "none";
-      ajouterFichierLabel.style.display = "none";
-      mo_max.style.display = "none";
-
-      submitButton.removeAttribute("disabled");
-    };
-
-    reader.readAsDataURL(fileInput.files[0]);
-  }
-}
 
 //pour l'api categorie
 document.addEventListener("DOMContentLoaded", function () {
@@ -198,4 +92,89 @@ document.addEventListener("DOMContentLoaded", function () {
   };
 
   la_cat.send();
+});
+//pour afficher les img dans la modal avec les pubelle
+fetch("http://localhost:5678/api/works")
+  .then((response) => {
+    if (!response.ok) {
+      throw new Error(`Erreur HTTP! Statut : ${response.status}`);
+    }
+    return response.json();
+  })
+  .then((data) => {
+    var imgmoDiv = document.getElementById("imgmo");
+
+    if (data.length > 0) {
+      data.forEach((work) => {
+        var imgElement = document.createElement("img");
+        imgElement.src = work.imageUrl;
+        imgElement.alt = work.title;
+
+        var containerDiv = document.createElement("div");
+        containerDiv.classList.add("image-container");
+
+        containerDiv.appendChild(imgElement);
+
+        var trashIcon = document.createElement("ipoubel");
+        trashIcon.classList.add("fa-solid", "fa-trash-can");
+        trashIcon.title = "Cliquez pour supprimer l'image";
+
+        trashIcon.addEventListener("click", async function (event) {
+          event.preventDefault();
+          const token = localStorage.getItem("token");
+          const res = await fetch(
+            `http://localhost:5678/api/works/${work.id}`,
+            {
+              method: "DELETE",
+              headers: {
+                "Content-Type": "application/json",
+                Accept: "*/*",
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+          if (res.ok) {
+            imgmoDiv.removeChild(containerDiv);
+          } else {
+            console.error("Erreur lors de la suppression de l'image");
+          }
+        });
+
+        var squareDiv = document.createElement("div");
+        squareDiv.classList.add("square");
+        containerDiv.appendChild(squareDiv);
+        containerDiv.appendChild(trashIcon);
+
+        imgmoDiv.appendChild(containerDiv);
+      });
+    }
+  });
+
+const image = document.getElementById("imageInput");
+const title = document.getElementById("title");
+const category = document.getElementById("category");
+const submit = document.getElementById("submit");
+const selectedImage = document.getElementById("selectedImage");
+const svgElement = document.querySelector(".le-svg");
+const labelElement = document.querySelector(".ajouterFichierLabel");
+const moMaxElement = document.querySelector(".mo_max");
+
+image.addEventListener("change", function (event) {
+  const file = image.files[0];
+
+  if (file) {
+    const reader = new FileReader();
+
+    reader.onload = function (e) {
+      selectedImage.src = e.target.result;
+
+      selectedImage.style.display = "block";
+
+      svgElement.style.display = "none";
+      labelElement.style.display = "none";
+      moMaxElement.style.display = "none";
+    };
+
+    reader.readAsDataURL(file);
+  }
 });

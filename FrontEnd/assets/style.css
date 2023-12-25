@@ -414,7 +414,7 @@ a {
 }
 
 #imgmo img {
-  width: 21%;
+  width: 80px;
   margin-bottom: 15px;
 }
 h2.Galerie-p {
@@ -538,8 +538,9 @@ hr {
   height: 1px;
 }
 .image-container {
+  display: flex;
+  flex-wrap: wrap;
   position: relative;
-  display: inline-block;
 }
 
 .square {
@@ -550,4 +551,21 @@ hr {
   height: 20px;
   background-color: red;
   cursor: pointer;
+}
+
+.fa-trash-can {
+  position: absolute;
+  color: white;
+  left: 75%;
+  top: 5px;
+
+  cursor: pointer;
+}
+.square {
+  position: absolute;
+  width: 17px;
+  height: 17px;
+  background-color: rgb(0, 0, 0);
+  top: 4px;
+  left: 72%;
 }

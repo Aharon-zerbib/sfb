@@ -17,14 +17,42 @@ async function fetchPost(url, formData) {
 
     if (response.status === 401) {
       throw new Error(
-        "Le mot de passe que vous avez indiqué n'est pas reconnu." //pas alert
+        "Le mot de passe que vous avez indiqué n'est pas reconnu."
       );
     }
 
     return response.json();
   } catch (error) {
-    alert("Erreur: " + error.message);
+    let errorMessage;
+
+    if (error.message === "L'adresse email saisie est invalide.") {
+    }
+    {
+      errorMessage = "Mot de passe incorrect. Veuillez réessayer.";
+      showAlert(errorMessage, "orange");
+    }
   }
+}
+
+function showAlert(message, color = "gray") {
+  const alertDiv = document.createElement("div");
+  alertDiv.style.backgroundColor = color;
+  alertDiv.style.padding = "10px";
+  alertDiv.style.margin = "10px";
+  alertDiv.style.borderRadius = "5px";
+  alertDiv.style.position = "fixed";
+  alertDiv.style.top = "0";
+  alertDiv.style.right = "0";
+  alertDiv.style.width = "100%";
+  alertDiv.style.textAlign = "center";
+  alertDiv.innerText = message;
+
+  document.body.appendChild(alertDiv);
+
+  //c pour que sa se bar apres 5 scond demande a openIA (-_-)
+  setTimeout(() => {
+    document.body.removeChild(alertDiv);
+  }, 5000);
 }
 function toggleButtonVisibility() {
   const btnProj = document.querySelector(".btn_projects");
