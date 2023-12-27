@@ -69,30 +69,6 @@ document
   .getElementById("returnToModal1Button")
   .addEventListener("click", returnToModal1);
 
-//pour l'api categorie
-document.addEventListener("DOMContentLoaded", function () {
-  var select = document.getElementById("category");
-
-  var la_cat = new XMLHttpRequest();
-
-  la_cat.open("GET", "http://localhost:5678/api/categories", true);
-  la_cat.setRequestHeader("Content-type", "application/json");
-
-  la_cat.onload = function () {
-    if (la_cat.status >= 200 && la_cat.status < 300) {
-      var categories = JSON.parse(la_cat.responseText);
-
-      categories.forEach(function (category) {
-        var option = document.createElement("option");
-        option.value = category.id;
-        option.textContent = category.name;
-        select.appendChild(option);
-      });
-    }
-  };
-
-  la_cat.send();
-});
 //pour afficher les img dans la modal avec les pubelle
 fetch("http://localhost:5678/api/works")
   .then((response) => {
@@ -176,5 +152,88 @@ image.addEventListener("change", function (event) {
     };
 
     reader.readAsDataURL(file);
+  }
+});
+
+/////////////////////////////////
+
+async function getIdCategory(category) {
+  try {
+    const response = await fetch("http://localhost:5678/api/categories");
+    const data = await response.json();
+    const foundCategory = data.find(
+      (cat) => cat.name.toLowerCase() === category.toLowerCase()
+    );
+
+    if (foundCategory) {
+      console.log("Catégorie trouvée. ID :", foundCategory.id);
+      return foundCategory.id;
+    } else {
+      throw new Error("Catégorie non trouvée");
+    }
+  } catch (error) {
+    console.error("Erreur lors de la récupération des catégories :", error);
+    throw error;
+  }
+}
+
+async function fillCategoryDropdown() {
+  try {
+    const response = await fetch("http://localhost:5678/api/categories");
+    const data = await response.json();
+    const categoryDropdown = document.getElementById("category");
+
+    categoryDropdown.innerHTML = "";
+
+    data.forEach((category) => {
+      const option = document.createElement("option");
+      option.value = category.name;
+      option.text = category.name;
+      categoryDropdown.appendChild(option);
+    });
+  } catch (error) {
+    console.error(
+      "Erreur lors du remplissage du menu déroulant des catégories :",
+      error
+    );
+    throw error;
+  }
+}
+
+document.addEventListener("DOMContentLoaded", fillCategoryDropdown);
+
+document.getElementById("submit").addEventListener("click", async (e) => {
+  e.preventDefault();
+
+  const image = document.getElementById("imageInput");
+  const title = document.getElementById("title");
+  const category = document.getElementById("category");
+
+  if (!image.files[0]) {
+    alert("Veuillez sélectionner une image.");
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append("image", image.files[0]);
+  formData.append("title", title.value);
+
+  try {
+    const categoryID = await getIdCategory(category.value);
+    formData.append("category", categoryID);
+
+    const token = localStorage.getItem("token");
+    const response = await fetch("http://localhost:5678/api/works", {
+      method: "POST",
+      body: formData,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (response.status === 201) {
+    }
+  } catch (error) {
+    console.error(error);
   }
 });
