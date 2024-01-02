@@ -49,7 +49,7 @@ function showAlert(message, color = "gray") {
 
   document.body.appendChild(alertDiv);
 
-  //c pour que sa se bar apres 5 scond demande a openIA (-_-)
+  //c pour que sa taille apres 5 scond demande a openIA (-_-)
   setTimeout(() => {
     document.body.removeChild(alertDiv);
   }, 5000);
@@ -61,7 +61,7 @@ function toggleButtonVisibility() {
   const loginLink = document.getElementById("login");
 
   const token = localStorage.getItem("token");
-
+  //laguage ternner c bien que pour les petit truc
   if (btnProj) {
     btnProj.style.display = token ? "inline" : "none";
   }
@@ -100,7 +100,7 @@ async function submit(e) {
     } else {
       console.log("Erreur: Aucun token trouvé dans la réponse.");
     }
-  } catch (err) {
+  } catch (error) {
     console.log("Erreur: " + err.message);
   }
 }

@@ -1,9 +1,4 @@
-/*
-gallery;
-filtre;
-token;
-
-*/
+/*----------Pour la fuction categorie-------------- */
 fetchCats();
 
 async function fetchCats() {
@@ -26,7 +21,7 @@ async function fetchCats() {
 
   filterWorks(0);
 }
-
+/*----------------Pour la fuction pour afficher les img----------------- */
 async function filterWorks(categoryId, clickedListItem) {
   const listItems = document.querySelectorAll("#filters li");
 

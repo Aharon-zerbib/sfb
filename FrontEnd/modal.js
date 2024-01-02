@@ -1,3 +1,4 @@
+/*------------Pour ouvrire et fermé  moddall-----------------------*/
 let modal = null;
 
 const openModal = function (e) {
@@ -69,7 +70,7 @@ document
   .getElementById("returnToModal1Button")
   .addEventListener("click", returnToModal1);
 
-//pour afficher les img dans la modal avec les pubelle
+/*-----------------Pour afficher les img avec les poubelles------------------ */
 fetch("http://localhost:5678/api/works")
   .then((response) => {
     if (!response.ok) {
@@ -78,20 +79,20 @@ fetch("http://localhost:5678/api/works")
     return response.json();
   })
   .then((data) => {
-    var imgmoDiv = document.getElementById("imgmo");
+    let imgmoDiv = document.getElementById("imgmo");
 
     if (data.length > 0) {
       data.forEach((work) => {
-        var imgElement = document.createElement("img");
+        let imgElement = document.createElement("img");
         imgElement.src = work.imageUrl;
         imgElement.alt = work.title;
 
-        var containerDiv = document.createElement("div");
+        let containerDiv = document.createElement("div");
         containerDiv.classList.add("image-container");
 
         containerDiv.appendChild(imgElement);
 
-        var trashIcon = document.createElement("ipoubel");
+        let trashIcon = document.createElement("ipoubel");
         trashIcon.classList.add("fa-solid", "fa-trash-can");
         trashIcon.title = "Cliquez pour supprimer l'image";
 
@@ -116,7 +117,7 @@ fetch("http://localhost:5678/api/works")
           }
         });
 
-        var squareDiv = document.createElement("div");
+        let squareDiv = document.createElement("div");
         squareDiv.classList.add("square");
         containerDiv.appendChild(squareDiv);
         containerDiv.appendChild(trashIcon);
@@ -155,9 +156,11 @@ image.addEventListener("change", function (event) {
   }
 });
 
-/////////////////////////////////
+/*-----Pour la fuction categorie avec le selecte pour lajout de img ----------- */
 
 async function getIdCategory(category) {
+  let categoryId;
+
   try {
     const response = await fetch("http://localhost:5678/api/categories");
     const data = await response.json();
@@ -167,23 +170,21 @@ async function getIdCategory(category) {
 
     if (foundCategory) {
       console.log("Catégorie trouvée. ID :", foundCategory.id);
-      return foundCategory.id;
-    } else {
-      throw new Error("Catégorie non trouvée");
+      categoryId = foundCategory.id;
     }
   } catch (error) {
-    console.error("Erreur lors de la récupération des catégories :", error);
-    throw error;
+    console.error(error);
   }
+
+  return categoryId;
 }
 
 async function fillCategoryDropdown() {
+  let categoryDropdown = document.getElementById("category");
+
   try {
     const response = await fetch("http://localhost:5678/api/categories");
     const data = await response.json();
-    const categoryDropdown = document.getElementById("category");
-
-    categoryDropdown.innerHTML = "";
 
     data.forEach((category) => {
       const option = document.createElement("option");
@@ -191,13 +192,7 @@ async function fillCategoryDropdown() {
       option.text = category.name;
       categoryDropdown.appendChild(option);
     });
-  } catch (error) {
-    console.error(
-      "Erreur lors du remplissage du menu déroulant des catégories :",
-      error
-    );
-    throw error;
-  }
+  } catch (error) {}
 }
 
 document.addEventListener("DOMContentLoaded", fillCategoryDropdown);
@@ -218,8 +213,10 @@ document.getElementById("submit").addEventListener("click", async (e) => {
   formData.append("image", image.files[0]);
   formData.append("title", title.value);
 
+  let categoryID;
+
   try {
-    const categoryID = await getIdCategory(category.value);
+    categoryID = await getIdCategory(category.value);
     formData.append("category", categoryID);
 
     const token = localStorage.getItem("token");
