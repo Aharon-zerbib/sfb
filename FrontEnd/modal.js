@@ -1,4 +1,5 @@
 /*------------Pour ouvrire et fermé  moddall-----------------------*/
+
 let modal = null;
 
 const openModal = function (e) {
@@ -70,167 +71,143 @@ document
   .getElementById("returnToModal1Button")
   .addEventListener("click", returnToModal1);
 
-/*-----------------Pour afficher les img avec les poubelles------------------ */
-fetch("http://localhost:5678/api/works")
-  .then((response) => {
-    if (!response.ok) {
-      throw new Error(`Erreur HTTP! Statut : ${response.status}`);
-    }
-    return response.json();
-  })
-  .then((data) => {
-    let imgmoDiv = document.getElementById("imgmo");
+/////////////////////////////////////////////////////////////////
+function loadImages() {
+  fetch("http://localhost:5678/api/works")
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Erreur lors de la récupération des données");
+      }
+      return response.json();
+    })
+    .then((data) => {
+      let imgmoDiv = document.getElementById("imgmo");
+      imgmoDiv.innerHTML = "";
 
-    if (data.length > 0) {
-      data.forEach((work) => {
-        let imgElement = document.createElement("img");
-        imgElement.src = work.imageUrl;
-        imgElement.alt = work.title;
+      const workContainer = document.querySelector(".work-container");
+      workContainer.innerHTML = "";
 
-        let containerDiv = document.createElement("div");
-        containerDiv.classList.add("image-container");
+      if (data.length > 0) {
+        data.forEach((work) => {
+          let imgElement = document.createElement("img");
+          imgElement.src = work.imageUrl;
+          imgElement.alt = work.title;
 
-        containerDiv.appendChild(imgElement);
+          let containerDiv = document.createElement("div");
+          containerDiv.classList.add("image-container");
 
-        let trashIcon = document.createElement("ipoubel");
-        trashIcon.classList.add("fa-solid", "fa-trash-can");
-        trashIcon.title = "Cliquez pour supprimer l'image";
+          containerDiv.appendChild(imgElement);
 
-        trashIcon.addEventListener("click", async function (event) {
-          event.preventDefault();
-          const token = localStorage.getItem("token");
-          const res = await fetch(
-            `http://localhost:5678/api/works/${work.id}`,
-            {
-              method: "DELETE",
-              headers: {
-                "Content-Type": "application/json",
-                Accept: "*/*",
-                Authorization: `Bearer ${token}`,
-              },
+          let trashIcon = document.createElement("i");
+          trashIcon.classList.add("fa-solid", "fa-trash-can");
+          trashIcon.title = "Cliquez pour supprimer l'image";
+
+          trashIcon.addEventListener("click", async function (event) {
+            event.preventDefault();
+            const token = localStorage.getItem("token");
+            const res = await fetch(
+              `http://localhost:5678/api/works/${work.id}`,
+              {
+                method: "DELETE",
+                headers: {
+                  "Content-Type": "application/json",
+                  Accept: "*/*",
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            );
+            if (res.ok) {
+              loadImages();
+            } else {
+              console.error("Erreur lors de la suppression de l'image");
             }
-          );
-          if (res.ok) {
-            imgmoDiv.removeChild(containerDiv);
-          } else {
-            console.error("Erreur lors de la suppression de l'image");
-          }
+          });
+
+          let squareDiv = document.createElement("div");
+          squareDiv.classList.add("square");
+          containerDiv.appendChild(squareDiv);
+          containerDiv.appendChild(trashIcon);
+
+          imgmoDiv.appendChild(containerDiv);
         });
-
-        let squareDiv = document.createElement("div");
-        squareDiv.classList.add("square");
-        containerDiv.appendChild(squareDiv);
-        containerDiv.appendChild(trashIcon);
-
-        imgmoDiv.appendChild(containerDiv);
-      });
-    }
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+}
+/*
+document
+  .querySelector(".work-container")
+  .addEventListener("click", function (event) {
+    event.preventDefault();
   });
+*/
+loadImages();
+////////////////////////////////////////////////////////////////////
 
+const form = document.getElementById("validate_form");
 const image = document.getElementById("imageInput");
 const title = document.getElementById("title");
 const category = document.getElementById("category");
-const submit = document.getElementById("submit");
 const selectedImage = document.getElementById("selectedImage");
 const svgElement = document.querySelector(".le-svg");
 const labelElement = document.querySelector(".ajouterFichierLabel");
 const moMaxElement = document.querySelector(".mo_max");
 
 image.addEventListener("change", function (event) {
+  console.log("Image selected:", event);
   const file = image.files[0];
-
-  if (file) {
-    const reader = new FileReader();
-
-    reader.onload = function (e) {
-      selectedImage.src = e.target.result;
-
-      selectedImage.style.display = "block";
-
-      svgElement.style.display = "none";
-      labelElement.style.display = "none";
-      moMaxElement.style.display = "none";
-    };
-
-    reader.readAsDataURL(file);
-  }
+  selectedImage.src = URL.createObjectURL(file);
+  selectedImage.style.display = "block";
+  svgElement.style.display = "none";
+  labelElement.style.display = "none";
+  moMaxElement.style.display = "none";
 });
 
-/*-----Pour la fuction categorie avec le selecte pour lajout de img ----------- */
+async function updateCategoryDropdown() {
+  const response = await fetch("http://localhost:5678/api/categories");
+  const data = await response.json();
 
-async function getIdCategory(category) {
-  let categoryId;
-
-  try {
-    const response = await fetch("http://localhost:5678/api/categories");
-    const data = await response.json();
-    const foundCategory = data.find(
-      (cat) => cat.name.toLowerCase() === category.toLowerCase()
-    );
-
-    if (foundCategory) {
-      console.log("Catégorie trouvée. ID :", foundCategory.id);
-      categoryId = foundCategory.id;
-    }
-  } catch (error) {
-    console.error(error);
-  }
-
-  return categoryId;
+  data.forEach((cat) => {
+    const option = document.createElement("option");
+    option.value = cat.id;
+    option.textContent = cat.name;
+    category.appendChild(option);
+  });
 }
 
-async function fillCategoryDropdown() {
-  let categoryDropdown = document.getElementById("category");
+updateCategoryDropdown();
 
-  try {
-    const response = await fetch("http://localhost:5678/api/categories");
-    const data = await response.json();
-
-    data.forEach((category) => {
-      const option = document.createElement("option");
-      option.value = category.name;
-      option.text = category.name;
-      categoryDropdown.appendChild(option);
-    });
-  } catch (error) {}
-}
-
-document.addEventListener("DOMContentLoaded", fillCategoryDropdown);
-
-document.getElementById("submit").addEventListener("click", async (e) => {
+form.addEventListener("submit", async function (e) {
   e.preventDefault();
-
-  const image = document.getElementById("imageInput");
-  const title = document.getElementById("title");
-  const category = document.getElementById("category");
 
   if (!image.files[0]) {
     alert("Veuillez sélectionner une image.");
     return;
   }
+  if (!title.value) {
+    alert("Veuillez entrer un titre.");
+    return;
+  }
+  if (!category.value) {
+    alert("Veuillez sélectionner une catégorie.");
+    return;
+  }
 
-  const formData = new FormData();
-  formData.append("image", image.files[0]);
-  formData.append("title", title.value);
+  const formData = new FormData(form);
+  formData.set("image", image.files[0]);
 
-  let categoryID;
+  const token = localStorage.getItem("token");
 
-  try {
-    categoryID = await getIdCategory(category.value);
-    formData.append("category", categoryID);
+  const response = await fetch("http://localhost:5678/api/works", {
+    method: "POST",
+    body: formData,
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
 
-    const token = localStorage.getItem("token");
-    const response = await fetch("http://localhost:5678/api/works", {
-      method: "POST",
-      body: formData,
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-
-    if (response.status === 201) {
-    }
-  } catch (error) {
-    console.error(error);
+  if (response.status === 201) {
   }
 });
