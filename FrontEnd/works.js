@@ -56,7 +56,7 @@ export function displayWorks(filteredCategories) {
   });
 }
 
-async function filterWorks(categoryId, clickedListItem) {
+export async function filterWorks(categoryId, clickedListItem) {
   const listItems = document.querySelectorAll("#filters li");
 
   listItems.forEach((item) => {

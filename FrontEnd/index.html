@@ -76,7 +76,7 @@
               >
             </span>
           </h2>
-
+          <!---->
           <aside
             id="modal1"
             class="modal"
@@ -128,7 +128,7 @@
                 </svg>
                 <button class="js-modal-close">&times;</button>
                 <h2 id="modal_title-2">Ajout photo</h2>
-                <form id="validate_form">
+                <form onsubmit="event.preventDefault();" id="validate_form">
                   <div class="modal_bod">
                     <div class="modal_upload-1">
                       <div class="ajout">
@@ -192,7 +192,8 @@
 
                   <div class="modal_footer">
                     <hr />
-                    <button id="submit" value="">Valider</button>
+
+                    <input id="submit" type="submit" value="Valider" />
                   </div>
                 </form>
               </div>

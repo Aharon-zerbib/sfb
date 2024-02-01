@@ -72,6 +72,7 @@ document
   .addEventListener("click", returnToModal1);
 
 /////////////////////////////////////////////////////////////////
+import { displayWorks } from "./works.js";
 function loadImages() {
   fetch("http://localhost:5678/api/works")
     .then((response) => {
@@ -84,9 +85,7 @@ function loadImages() {
       let imgmoDiv = document.getElementById("imgmo");
       imgmoDiv.innerHTML = "";
 
-      const workContainer = document.querySelector(".work-container");
-      workContainer.innerHTML = "";
-
+      displayWorks(data);
       if (data.length > 0) {
         data.forEach((work) => {
           let imgElement = document.createElement("img");
@@ -124,10 +123,9 @@ function loadImages() {
           });
 
           let squareDiv = document.createElement("div");
-          squareDiv.classList.add("square");
+          squareDiv.classList.add("square"); //surpim
           containerDiv.appendChild(squareDiv);
           containerDiv.appendChild(trashIcon);
-
           imgmoDiv.appendChild(containerDiv);
         });
       }
@@ -136,13 +134,13 @@ function loadImages() {
       console.error(error);
     });
 }
-/*
+
 document
   .querySelector(".work-container")
   .addEventListener("click", function (event) {
     event.preventDefault();
   });
-*/
+
 loadImages();
 ////////////////////////////////////////////////////////////////////
 
@@ -156,7 +154,6 @@ const labelElement = document.querySelector(".ajouterFichierLabel");
 const moMaxElement = document.querySelector(".mo_max");
 
 image.addEventListener("change", function (event) {
-  console.log("Image selected:", event);
   const file = image.files[0];
   selectedImage.src = URL.createObjectURL(file);
   selectedImage.style.display = "block";
@@ -207,7 +204,8 @@ form.addEventListener("submit", async function (e) {
       Authorization: `Bearer ${token}`,
     },
   });
-
+  console.log(response);
   if (response.status === 201) {
+    displayWorks(data);
   }
 });
