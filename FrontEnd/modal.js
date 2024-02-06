@@ -73,6 +73,7 @@ document
 
 /////////////////////////////////////////////////////////////////
 import { displayWorks } from "./works.js";
+
 function loadImages() {
   fetch("http://localhost:5678/api/works")
     .then((response) => {
@@ -84,8 +85,8 @@ function loadImages() {
     .then((data) => {
       let imgmoDiv = document.getElementById("imgmo");
       imgmoDiv.innerHTML = "";
-
       displayWorks(data);
+
       if (data.length > 0) {
         data.forEach((work) => {
           let imgElement = document.createElement("img");
@@ -123,7 +124,7 @@ function loadImages() {
           });
 
           let squareDiv = document.createElement("div");
-          squareDiv.classList.add("square"); //surpim
+          squareDiv.classList.add("square");
           containerDiv.appendChild(squareDiv);
           containerDiv.appendChild(trashIcon);
           imgmoDiv.appendChild(containerDiv);
@@ -142,7 +143,6 @@ document
   });
 
 loadImages();
-////////////////////////////////////////////////////////////////////
 
 const form = document.getElementById("validate_form");
 const image = document.getElementById("imageInput");
@@ -204,8 +204,8 @@ form.addEventListener("submit", async function (e) {
       Authorization: `Bearer ${token}`,
     },
   });
-  console.log(response);
+
   if (response.status === 201) {
-    displayWorks(data);
+    loadImages();
   }
 });
