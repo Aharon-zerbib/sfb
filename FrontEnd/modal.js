@@ -2,18 +2,21 @@
 
 let modal = null;
 
+// Fonction pour ouvrir la modal
 const openModal = function (e) {
   e.preventDefault();
   const target = document.querySelector(e.target.getAttribute("href"));
   showModal(target);
 };
 
+// Fonction pour fermer la modal
 const closeModal = function (e) {
   if (modal === null) return;
   e.preventDefault();
   hideModal(modal);
 };
 
+// Fonction pour afficher la modal
 const showModal = function (target) {
   target.style.display = null;
   target.removeAttribute("aria-hidden");
@@ -27,6 +30,7 @@ const showModal = function (target) {
     .addEventListener("click", stopPropagation);
 };
 
+// Fonction pour masquer la modal
 const hideModal = function (target) {
   target.style.display = "none";
   target.setAttribute("aria-hidden", "true");
@@ -72,7 +76,10 @@ document
   .addEventListener("click", returnToModal1);
 
 /////////////////////////////////////////////////////////////////
+
 import { displayWorks } from "./works.js";
+
+// Fonction pour charger les images depuis l'API
 
 function loadImages() {
   fetch("http://localhost:5678/api/works")
@@ -153,6 +160,7 @@ const svgElement = document.querySelector(".le-svg");
 const labelElement = document.querySelector(".ajouterFichierLabel");
 const moMaxElement = document.querySelector(".mo_max");
 
+// Récupère le fichier sélectionné
 image.addEventListener("change", function (event) {
   const file = image.files[0];
   selectedImage.src = URL.createObjectURL(file);
@@ -162,6 +170,7 @@ image.addEventListener("change", function (event) {
   moMaxElement.style.display = "none";
 });
 
+// Fonction pour mettre qu'il et selecte sur les categorie
 async function updateCategoryDropdown() {
   const response = await fetch("http://localhost:5678/api/categories");
   const data = await response.json();
@@ -179,6 +188,7 @@ updateCategoryDropdown();
 form.addEventListener("submit", async function (e) {
   e.preventDefault();
 
+  // Si je enst pas mi d'img ou titre sa mais une alerte
   if (!image.files[0]) {
     alert("Veuillez sélectionner une image.");
     return;
@@ -204,7 +214,7 @@ form.addEventListener("submit", async function (e) {
       Authorization: `Bearer ${token}`,
     },
   });
-
+  //Ci ok alor sa mais a jour le loadImages
   if (response.status === 201) {
     loadImages();
   }

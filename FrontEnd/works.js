@@ -1,4 +1,4 @@
-/*----------Pour la fuction categorie-------------- */
+//Pour la fuction categorie
 fetchCats();
 
 async function fetchCats() {
@@ -22,12 +22,9 @@ async function fetchCats() {
   filterWorks(0);
 }
 
+//Fuction pour recup les Works
 async function fetchFilteredWorks(categoryId) {
   const response = await fetch("http://localhost:5678/api/works");
-
-  if (!response.ok) {
-    throw new Error(`Erreur HTTP! Statut : ${response.status}`);
-  }
 
   const categories = await response.json();
   const filteredCategories = categories.filter((work) => {
@@ -37,6 +34,7 @@ async function fetchFilteredWorks(categoryId) {
   return filteredCategories;
 }
 
+// Poura fficher les Works filtrées
 export function displayWorks(filteredCategories) {
   const gallery = document.getElementById("gallery");
   gallery.innerHTML = "";
@@ -55,7 +53,7 @@ export function displayWorks(filteredCategories) {
     gallery.appendChild(imageContainer);
   });
 }
-
+// Fonction pour filtrer les Works en fonction de la catégorie
 export async function filterWorks(categoryId, clickedListItem) {
   const listItems = document.querySelectorAll("#filters li");
 

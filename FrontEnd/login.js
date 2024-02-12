@@ -10,7 +10,7 @@ async function fetchPost(url, formData) {
       },
       body: data,
     });
-
+    //gere les error
     if (response.status === 404) {
       throw new Error("L'adresse email saisie est invalide.");
     }
@@ -34,6 +34,7 @@ async function fetchPost(url, formData) {
   }
 }
 
+// Fonction pour afficher un message d'alerte avec animation
 function showAlert(message, color = "gray") {
   const alertDiv = document.createElement("div");
   alertDiv.style.backgroundColor = color;
@@ -49,11 +50,13 @@ function showAlert(message, color = "gray") {
 
   document.body.appendChild(alertDiv);
 
-  //c pour que sa taille apres 5 scond demande a openIA (-_-)
+  //c pour que sa se taille apres 5 scond
   setTimeout(() => {
     document.body.removeChild(alertDiv);
   }, 5000);
 }
+
+// Fonction pour visibilité des boutons (token)
 function toggleButtonVisibility() {
   const btnProj = document.querySelector(".btn_projects");
   const btnEditMode = document.getElementById("btn_edit_mode");
@@ -61,7 +64,7 @@ function toggleButtonVisibility() {
   const loginLink = document.getElementById("login");
 
   const token = localStorage.getItem("token");
-  //laguage ternner c bien que pour les petit truc
+
   if (btnProj) {
     btnProj.style.display = token ? "inline" : "none";
   }
@@ -78,7 +81,7 @@ function toggleButtonVisibility() {
     loginLink.style.display = token ? "none" : "inline";
   }
 }
-
+//logut sa enleve le token et sa redirrige vers la page login
 function logout() {
   localStorage.removeItem("token");
   toggleButtonVisibility();
@@ -98,16 +101,14 @@ async function submit(e) {
       toggleButtonVisibility();
       window.location.href = "index.html";
     } else {
-      console.log("Erreur: Aucun token trouvé dans la réponse.");
+      console.log("pas token ");
     }
   } catch (error) {
     console.log("Erreur: " + err.message);
   }
 }
 
-function toggleEditMode() {
-  console.log("Mode édition activé !");
-}
+function toggleEditMode() {}
 
 document.addEventListener("DOMContentLoaded", function () {
   const submitForm = document.querySelector(".form");
